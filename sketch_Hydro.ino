@@ -1,23 +1,28 @@
+// --------------------------------------------
+//  ESP-WROOM-32 with SEN0193(土壌水分センサー)
+// --------------------------------------------
 #include <WiFiClientSecure.h>
 
+// 環境に応じて変更してください
 const char* WIFI_SSID="";      // change for your WiFi-ssid
 const char* WIFI_PASSWORD="";  // change for your WiFi-password
-const char* LINE_HOST = "notify-api.line.me";
 const char* LINE_TOKEN = "";   // change for your Line-Token
+
+const char* LINE_HOST = "notify-api.line.me";
 const char* MESSAGE = "お風呂が溜まりました";
 const int THRESHOLD = 1500;    // センサーの水没検知を示す閾値
-const int SENSOR_PIN = 36;
+const int SENSOR_PIN = 36;     // センサーの入力PIN番号
 const int SENSOR_STS_INIT = 0; // センサー状態 初期
 const int SENSOR_STS_DROP = 1; // センサー状態 水没
+
+WiFiClientSecure client;
 
 int now_status;
 int pre_status;
 
-WiFiClientSecure client;
-
 void setup() {
 
-  // 土壌水分センサー SEN0193 準備
+  // シリアルポート準備
   Serial.begin(115200);
   while (!Serial);
   delay(2000);
@@ -56,7 +61,8 @@ void loop() {
   }
 
   // 閾値を下回った直後、LINEへ通知   
-  if (pre_status == SENSOR_STS_INIT && now_status == SENSOR_STS_DROP) {
+  if (pre_status == SENSOR_STS_INIT && 
+      now_status == SENSOR_STS_DROP) {
     httpsPost();
   }
 
