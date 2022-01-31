@@ -4,6 +4,10 @@
 
 お風呂のお湯が一定まで溜まったら、LINEを通じてお湯が溜まったことを通知します。
 
+![お風呂](/doc/room_ofuro.png)
+
+![通知](/doc/Notify.png)
+
 ## 必要な機器
 
 - ESP-WROOM-32
